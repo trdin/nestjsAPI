@@ -2,6 +2,7 @@ import {
     Controller, Body, Get, Post, UseGuards, Request, Param,
     UploadedFile,
     UseInterceptors,
+    BadRequestException,
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
@@ -22,7 +23,7 @@ export class PhotosController {
     @UseGuards(AuthenticatedGuard)
     @Post()
     @UseInterceptors(FileInterceptor(
-        'file', {
+        'image', {
         storage: diskStorage({
             destination: './upload'
         })
@@ -34,9 +35,12 @@ export class PhotosController {
         @UploadedFile() file: Express.Multer.File,
         @Body('tags') tags: string
     ) {
+
         console.log(file)
         const result = await this.PhotosService.create(req, name, file.path, tags)
         return result
+
+
     }
 
     @Get()
@@ -45,7 +49,6 @@ export class PhotosController {
     }
 
 
-    @UseGuards(AuthenticatedGuard)
     @Get(':id')
     async getPhoto(@Param('id') id: string) {
         return this.PhotosService.show(id);

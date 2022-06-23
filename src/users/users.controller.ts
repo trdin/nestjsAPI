@@ -17,7 +17,7 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     //post/ signup
-    @Post('/signup')
+    @Post('/')
     async addUser(
         @Body('password') userPassword: string,
         @Body('username') userName: string,
@@ -30,21 +30,14 @@ export class UsersController {
             userName,
             hashedPassword,
         );
-        return {
-            msg: 'User successfully registered',
-            userId: result.id,
-            userName: result.username
-        };
+        return result;
     }
 
     //Post / Login
     @UseGuards(LocalAuthGuard)
     @Post('/login')
     login(@Request() req): any {
-        return {
-            User: req.user,
-            msg: 'User logged in'
-        };
+        return req.user;
     };
 
     //Get / protected

@@ -30,7 +30,7 @@ export class PhotosService {
         var photo = new this.PhotoModel({
             name: name,
             path: path,
-            postedBy: req.session.passport.user.userId,
+            postedBy: req.session.passport.user._id,
             views: 0,
             likes: [],
             comments: [],
