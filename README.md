@@ -1,5 +1,6 @@
 # NestjsAPI
 project for learning Nest.js
+It is designed to be used with React client from my [**MERN app**](https://github.com/trdin/MERN-app/tree/main/frontend)
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
