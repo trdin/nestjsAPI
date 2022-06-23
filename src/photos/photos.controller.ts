@@ -1,5 +1,5 @@
 import {
-    Controller, Body, Get, Post, UseGuards, Request,
+    Controller, Body, Get, Post, UseGuards, Request, Param,
     UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
@@ -19,6 +19,7 @@ MulterModule.register({
 export class PhotosController {
     constructor(private readonly PhotosService: PhotosService) { }
 
+    @UseGuards(AuthenticatedGuard)
     @Post()
     @UseInterceptors(FileInterceptor(
         'file', {
@@ -33,15 +34,23 @@ export class PhotosController {
         @UploadedFile() file: Express.Multer.File,
         @Body('tags') tags: string
     ) {
-
-        console.log(file);
-        return file
-        //return await this.PhotosService.create(req, name, file.path, tags)
+        console.log(file)
+        const result = await this.PhotosService.create(req, name, file.path, tags)
+        return result
     }
 
     @Get()
-    async getPhoto() {
-        return "hello";
+    async getPhotos() {
+        return await this.PhotosService.list();
     }
+
+
+    @UseGuards(AuthenticatedGuard)
+    @Get(':id')
+    async getPhoto(@Param('id') id: string) {
+        return this.PhotosService.show(id);
+    }
+
+
 
 }
